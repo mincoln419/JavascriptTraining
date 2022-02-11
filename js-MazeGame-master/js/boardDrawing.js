@@ -32,6 +32,7 @@ export function ChangeColor(x, y, color) {
 }
 
 export function inputFunction(input, map) {
+    if(d.finshed) return;
     switch (input) {
         case 'w': //up
             map[d.nowX][d.nowY] = 0;
@@ -47,9 +48,10 @@ export function inputFunction(input, map) {
             if (map[d.nowX][d.nowY] == 1) {
                 d.nowY--;
             } else if (map[d.nowX][d.nowY] == 2) {
-                alert("축하합니다! 클리어하셨습니다.")
+                alert("축하합니다! 클리어하셨습니다.");
+                d.finshed = true;
             }
-            map[d.nowX][d.nowY] = 3;
+            map[d.nowX][d.nowY] = 3;            
             break;
         case 'a': //left
             map[d.nowX][d.nowY] = 0;
