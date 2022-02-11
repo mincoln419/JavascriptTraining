@@ -1,7 +1,10 @@
-
-import {erase, drawmaze} from "./util";
+import {erase, drawmaze} from "./boardDrawing";
+var map = document.map;
 
 function inputFunction(input) {
+    alert(document.finshed);
+    if(document.finshed)return;
+
     switch (input) {
         case 119: //up
             map[nowX][nowY] = 0;
@@ -20,6 +23,7 @@ function inputFunction(input) {
                 alert("축하합니다! 클리어하셨습니다.")
             }
             map[nowX][nowY] = 3;
+            document.finshed = true;
             break;
         case 97: //left
             map[nowX][nowY] = 0;
