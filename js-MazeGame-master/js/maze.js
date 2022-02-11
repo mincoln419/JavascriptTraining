@@ -1,7 +1,10 @@
 import {
-    inputFunction,
     drawmaze
 } from "./boardDrawing.js";
+
+import {
+    inputFunction
+} from "./ioController.js";
 
 document.addEventListener("DOMContentLoaded", main);
 
