@@ -30,3 +30,44 @@ export function erase() {
 export function ChangeColor(x, y, color) {
     d.getElementById("x" + x + "y" + y + "").bgColor = color;
 }
+
+export function inputFunction(input, map) {
+    switch (input) {
+        case 'w': //up
+            map[d.nowX][d.nowY] = 0;
+            d.nowX--;
+            if (map[d.nowX][d.nowY] == 1) {
+                d.nowX++;
+            }
+            map[d.nowX][d.nowY] = 3;
+            break;
+        case 'd': //right
+            map[d.nowX][d.nowY] = 0
+            d.nowY++;
+            if (map[d.nowX][d.nowY] == 1) {
+                d.nowY--;
+            } else if (map[d.nowX][d.nowY] == 2) {
+                alert("축하합니다! 클리어하셨습니다.")
+            }
+            map[d.nowX][d.nowY] = 3;
+            break;
+        case 'a': //left
+            map[d.nowX][d.nowY] = 0;
+            d.nowY--;
+            if (map[d.nowX][d.nowY] == 1) {
+                d.nowY++;
+            }
+            map[d.nowX][d.nowY] = 3;
+            break;
+        case 's': //down
+            map[d.nowX][d.nowY] = 0;
+            d.nowX++;
+            if (map[d.nowX][d.nowY] == 1) {
+                d.nowX--;
+            }
+            map[d.nowX][d.nowY] = 3;
+            break;
+    }
+    erase(map);
+    drawmaze(map);
+};
