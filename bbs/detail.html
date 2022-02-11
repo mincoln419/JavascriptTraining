@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>게시판 글쓰기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <h2>상세</h2>
+    <form>
+      <div>
+        <input id='bbsId' hidden=true>
+
+      </div>
+      <div class="form-group mb-3">
+        <label for="title">제목</label>
+        <!-- placeholder 속성 입력한 데이터가 없는 경우 배경으로 나타난다.실제적으로 입력을 100자까지로 지정 -->
+        <!-- required 속성을 설정하면 필수입력 사항이된다. -->
+        <!-- pattern 속성을 이용한 정규표현식으로 데이터의 유효성 검사를 할 수 있다. -->
+        <input type="text" class="form-control" id="titleText" placeholder="제목 입력(4-100)" name="title" maxlength="100"
+          required="required" pattern=".{4,100}">
+      </div>
+      <div class="form-group mb-3">
+        <label for="content">내용</label>
+        <!--  여러줄의 데이터를 입력하고 하고자 할때 textarea 태그를 사용한다. -->
+        <!--  textarea 안에 있는 모든 글자는 그대로 나타난다. 공백문자, tag, enter -->
+        <textarea class="form-control" rows="5" id="content" name="content" placeholder="내용 작성"></textarea>
+      </div>
+      <div class="form-group mb-3">
+        <label for="writer">작성자</label>
+        <input type="text" class="form-control" id="writer" readonly=true name="insterId">
+      </div>
+      <div class="mb-3">
+        <button id="register" type="button" class="btn btn-secondary">등록</button>
+        <button id="update" type="button" class="btn btn-secondary">수정</button>
+        <button id="delete" type="button" class="btn btn-secondary">삭제</button>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+  $(document).ready(function () {
+      var href = window.location.href;
+      var id = href.replace(/.+(detail)/, '');
+      // 기존테이블 데이터 지우고 행을 추가해야한다면 아래 empty() 추가
+  
+      if (id == '') {
+          $('#writer').attr('readonly', false);
+      } else {
+          id = id.replace("\/", "");
+          $.ajax({
+              url: 'http://127.0.0.1:8080/api/bbs/' + id,
+              method: 'GET',
+              success: function (data) {
+                  console.log(data);
+                  $("#titleText").val(data.title);
+                  $("#content").val(data.content);
+                  $("#writer").val(data.insterId);
+                  $("#bbsId").val(data.id);
+  
+              }
+          });
+      }
+  
+  });
+  
+  $('#register').on("click", function () {
+      var formSerializeArray = $('form').serializeArray();
+      var object = {};
+      for (var i = 0; i < formSerializeArray.length; i++) {
+          object[formSerializeArray[i]['name']] = formSerializeArray[i]['value'];
+      }
+  
+      $.ajax({
+          url: 'http://127.0.0.1:8080/api/bbs',
+          data: JSON.stringify(object),
+          method: 'POST',
+          contentType: "application/json; charset=utf-8",
+          success: function (data) {
+              console.log(data);
+              location.href = "/";
+          }
+      });
+  });
+  
+  $('#update').on("click", function () {
+  
+  
+      var formSerializeArray = $('form').serializeArray();
+      var object = {};
+      for (var i = 0; i < formSerializeArray.length; i++) {
+          object[formSerializeArray[i]['name']] = formSerializeArray[i]['value'];
+      }
+  
+      var id = $("#bbsId").val();
+  
+      $.ajax({
+          url: 'http://127.0.0.1:8080/api/bbs/' + id,
+          data: JSON.stringify(object),
+          method: 'PUT',
+          contentType: "application/json; charset=utf-8",
+          success: function (data) {
+              console.log(data);
+              location.href = "/";
+          }
+      });
+  });
+  
+  $('#delete').on("click", function () {
+  
+      var id = $("#bbsId").val();
+  
+      $.ajax({
+          url: 'http://127.0.0.1:8080/api/bbs/' + id,
+          method: 'DELETE',
+          contentType: "application/json; charset=utf-8",
+          success: function (data) {
+              console.log(data);
+              location.href = "/";
+          }
+      });
+  });
+  
+    </script>

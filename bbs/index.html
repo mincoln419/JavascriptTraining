@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+    <title>LIST</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jqueryrouter@2.2.11/dist/js/jquery.router.min.js"></script>
+
+</head>
+
+
+<body>
+    <div class="container">
+        <h2>목록</h2>
+
+        <table id="list" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>162</td>
+                <td>테스트 제목</td>
+                <td>메르메르</td>
+                <td>2022.02.17</td>
+                <td>2</td>
+            </tbody>
+        </table>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btn-secondary" id="insertButton" type="button">신규</button>
+        </div>
+    </div>
+</body>
+<script >
+    if ( window.$ ) {
+$(document).ready(function () {
+    var tags = [];
+
+
+    $('#insertButton').on('click', function () {
+        location.href = "/detail";
+    });
+
+    // 기존테이블 데이터 지우고 행을 추가해야한다면 아래 empty() 추가
+    $.ajax({
+        url: 'http://127.0.0.1:8080/api/bbs',
+        method: 'GET',
+        success: function (data) {
+            console.log("data::", data);
+            $("#list").empty();
+            if (data != null) {
+                $.each(data, function (idx, el) {
+                    tags.push("<tr class = 'rows'>");
+                    tags.push('<td>' + el.id + '</td>');
+                    tags.push('<td value = ' + el.id + ' class = "title">' + el.title +
+                        '</td>');
+                    tags.push('<td>' + el.insterId + '</td>');
+                    tags.push('<td>' + formatDate(el.instDtm) + '</td>');
+                    tags.push('<td>' + el.readCnt + '</td>');
+                    tags.push('</tr>');
+                });
+                $("#list").append(tags);
+                $("#list").on("click", ".title", function (e) {
+                    var id = $(e.target.attributes)[0].nodeValue;
+                    location.href = "/detail/" + id;
+                });
+            }
+        }
+    });
+});
+
+function formatDate(date) {
+
+    const d = new Date(date)
+
+    month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear(),
+        hour = d.getHours(),
+        minutes = d.getMinutes(),
+        seconds = d.getSeconds();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-') + " " + [hour, minutes, seconds].join(":");
+
+}
+}
+</script>
