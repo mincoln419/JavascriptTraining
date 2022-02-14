@@ -1,0 +1,28 @@
+#wrap {
+    width: 100%;
+    margin-left: 400px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+#gameTable {
+    float: left;
+    margin-top: 0;
+}
+
+#nextBlock {
+    float: left;
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+td {
+    width: 30px;
+    height: 30px;
+}
+
+caption {
+    margin-bottom: 10px;
+}
