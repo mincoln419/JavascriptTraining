@@ -44,7 +44,6 @@ function getRandom(divNum = 1){
     return Math.ceil(Math.random() * 10) % divNum;
 }
 
-
 const dx = [0, 0, 1, -1];
 const dy = [1, -1, 0, 0];
 const visited = new Array();
